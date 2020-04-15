@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bill</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .container{
+            display: flex;
+            flex-direction: column;
+            width: 288px;
+            align-items: center;
+        }
+        .bill_header{
+            display: flex;
+            width: 100%;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        .restro_header{
+            display: flex;
+            flex-direction: column;
+        }
+        .items{
+            display: flex;
+            width: 100%;
+            flex-direction: row;
+        }
+        .restro_header .name{
+            margin: 10px, 0px;
+            padding: 10px 10px;
+        }
+        .address, .phone{
+            margin: 3px 0px;
+            padding: 0px 10px;
+        }
+        .bill_no, .date_time{
+            margin: 3px 0px 0px 0px;
+            padding: 0px 10px;
+        }
+        .quantity, .item_name, .item_total{
+            padding: 0px 10px;
+        }
+        .quantity{
+            width: 50px;
+        }
+        .quantity_item{
+            width: 50px;
+            margin: 3px 0px;
+            padding-left: 15px;
+        }
+        .item_name{
+            width: 150px;
+        }
+        .line{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="restro_header">
+        <h3 class="name">Name</h3>
+        <p class="address">address</p>
+        <p class="phone">phone</p>
+    </div>
+    <div class="bill_header">
+        <p class="bill_no">Bill no.</p>
+        <p class="date_time">Date and Time</p>
+    </div>
+    <div class="line">-----------------------------------------------</div>
+    <div class="items">
+        <p class="quantity">Qty</p>
+        <p class="item_name">Itm Name</p>
+        <p class="item_total">Itm Ttl</p>
+    </div>
+    <div class="line">-----------------------------------------------</div>
+    <div class="items">
+        <p class="quantity_item">20</p>
+        <p class="item_name">lacha paratha</p>
+        <p class="item_total">50.00</p>
+    </div>
+    <div class="items">
+        <p class="quantity_item">20</p>
+        <p class="item_name">lacha paratha</p>
+        <p class="item_total">50.00</p>
+    </div>
+    <div class="items">
+        <p class="quantity_item">20</p>
+        <p class="item_name">lacha paratha</p>
+        <p class="item_total">50.00</p>
+    </div>
+
+    {% for detail in details %}
+        <p>{{ detail.qty }}</p>
+    {% endfor%}
+
+
+</div>
+</body>
+</html>

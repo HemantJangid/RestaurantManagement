@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<button
+                type="button"
+                class="btn btn-outline-light mr-3"
+                data-toggle="modal"
+                data-target="#addDish"
+        >
+            Add Dish
+        </button>
+
+        <!-- Modal -->
+        <div
+                class="modal fade"
+                id="addDish"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="add-dish-header"
+                aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="add-dish-header">Add Dish</h5>
+                        <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" action="addDish">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="dish_name">Dish Name</label>
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        id="dish_name"
+                                        name="dish_name"
+                                        aria-describedby="emailHelp"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="category">Category</label>
+                                <select class="form-control" id="category" name="category">
+                                    {% for category in categories %}
+                                    <option>{{ category.category }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="dish_type">Dish Type</label>
+                                <select
+                                        class="form-control"
+                                        id="dish_type"
+                                        name="dish_type"
+                                >
+                                    <option>Veg</option>
+                                    <option>Non-Veg</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="price">Price</label>
+                                <input
+                                        type="number"
+                                        class="form-control"
+                                        id="price"
+                                        name="price"
+                                        aria-describedby="emailHelp"
+                                />
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                Add Dish
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock%}
+{% block content %}
+<div class="wrapper">
+  <nav id="sidebar">
+    <div class="sidebar-header">
+      <h3>Dishes</h3>
+    </div>
+    <ul class="list-unstyled components">
+      <li><a href="#" class="category active">All</a></li>
+      {% for category in categories %}
+      <li class="text-capitalize"><a href="#" class="category">{{ category.category }}</a></li>
+      {% endfor %}
+    </ul>
+  </nav>
+  <div id="content">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <button type="button" id="sidebarCollapse" class="btn btn-dark">
+          <i class="fas fa-align-left"></i>
+          <span>Toggle Sidebar</span>
+        </button>
+      </div>
+    </nav>
+    <div class="container-fluid mt-3">
+      <div
+        class="d-flex justify-content-start align-self-center flex-wrap mx-3"
+      >
+        {% for dish in dishes %} {% if dish.v_or_n == 'v' %}
+        <button
+          type="button"
+          class="btn btn-success mx-2 my-2 text-capitalize dish"
+          id="pr_{{dish.id}}"
+        >
+          {{ dish.dish_name }}
+        </button>
+        {% elif dish.v_or_n == 'n' %}
+        <button
+          type="button"
+          class="btn btn-danger mx-2 my-2 text-capitalize dish"
+          id="pr_{{dish.id}}"
+        >
+          {{ dish.dish_name }}
+        </button>
+        {% endif %} {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock%} {% block js %}
+<script>
+  console.log("hello");
+  if (localStorage.getItem("cart") == null) {
+    var cart = {};
+  } else {
+    cart = JSON.parse(localStorage.getItem("cart"));
+  }
+  $(".dish").click(function() {
+    console.log("clicked");
+    var id_str = this.id.toString();
+    console.log(id_str);
+    if (cart[id_str] != undefined) {
+      cart[id_str] = cart[id_str] + 1;
+    } else {
+      cart[id_str] = 1;
+    }
+    console.log(cart);
+    localStorage.setItem("cart", JSON.stringify(cart));
+  });
+  console.log(cart);
+</script>
+{% endblock js%}

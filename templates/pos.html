@@ -1,0 +1,171 @@
+{% extends 'base.html' %} {% block content %}
+<div class="row">
+    <div class="wrapper col-lg-7 mx-0 pr-0">
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>Dishes</h3>
+            </div>
+            <ul class="list-unstyled components">
+                <li><a href="#" class="active">All</a></li>
+                {% for category in categories %}
+                <li class="text-capitalize"><a href="#">{{ category.category }}</a></li>
+                {% endfor %}
+            </ul>
+        </nav>
+        <div id="content">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <button type="button" id="sidebarCollapse" class="btn btn-dark">
+                        <i class="fas fa-align-left"></i>
+                        <span>Toggle Sidebar</span>
+                    </button>
+                </div>
+            </nav>
+            <div class="container-fluid mt-3">
+                <div
+                        class="d-flex justify-content-start align-self-center flex-wrap mx-3"
+                >
+                    {% for dish in dishes %} {% if dish.v_or_n == 'v' %}
+                    <button
+                            type="button"
+                            class="btn btn-success mx-2 my-2 text-capitalize dish"
+                            id="pr_{{dish.id}}"
+                    >
+                        {{ dish.dish_name }}
+                    </button>
+                    <span id="price_pr_{{dish.id}}" style="display: none"
+                    >{{ dish.price }}</span
+                    >
+                    {% elif dish.v_or_n == 'n' %}
+                    <button
+                            type="button"
+                            class="btn btn-danger mx-2 my-2 text-capitalize dish"
+                            id="pr_{{dish.id}}"
+                    >
+                        {{ dish.dish_name }}
+                    </button>
+                    <span id="price_pr_{{dish.id}}" style="display: none"
+                    >{{ dish.price }}</span
+                    >
+                    {% endif %} {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container col-lg-5 mx-0 pl-0">
+        <p><br/></p>
+        <form name="cart" method="post" action="bill" target="_blank">
+          {% csrf_token %}
+            <table name="cart" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Item Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr name="line_items">
+                    <td>
+                        <button name="remove" class="btn btn-dark btn-sm">
+                            Remove
+                        </button>
+                    </td>
+                    <td><input
+                            type="text"
+                            name="item"
+                            value=""
+                            class="form-control form-control-sm item text-capitalize"
+                    /></td>
+                    <td>
+                        <input
+                                type="text"
+                                name="qty"
+                                value=""
+                                class="form-control form-control-sm qty"
+                        />
+                    </td>
+                    <td>
+                        <input
+                                type="text"
+                                name="price"
+                                value=""
+                                class="form-control form-control-sm"
+                        />
+                    </td>
+                    <td>
+                        <input
+                                type="text"
+                                name="item_total"
+                                jAutoCalc="{qty} * {price}"
+                                class="form-control form-control-sm item_total"
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">&nbsp;</td>
+                    <td>Subtotal</td>
+                    <td>&nbsp;</td>
+                    <td>
+                        <input
+                                type="text"
+                                name="sub_total"
+                                jAutoCalc="SUM({item_total})"
+                                class="form-control form-control-sm sub_total"
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">&nbsp;</td>
+                    <td>Tax</td>
+                    <td>
+                        <select name="tax" class="form-control">
+                            <option value=".06">CT Tax</option>
+                            <option value=".00">Tax Free</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input
+                                type="text"
+                                name="tax_total"
+                                jAutoCalc="{sub_total} * {tax}"
+                                class="form-control form-control-sm tax_total"
+                        />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">&nbsp;</td>
+                    <td>Total</td>
+                    <td>&nbsp;</td>
+                    <td>
+                        <input
+                                type="text"
+                                name="grand_total"
+                                jAutoCalc="{sub_total} + {tax_total}"
+                                class="form-control form-control-sm grand_total"
+                        />
+                    </td>
+                </tr>
+                <tr name="line_items">
+                    <td colspan="4">&nbsp;</td>
+                    <td>
+                        <button type="submit" class="btn btn-dark">Submit</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+
+{% endblock%}
+
+{% block js %}
+<script>
+    $('.qty').change(function(){
+
+    });
+</script>
+{% endblock%}

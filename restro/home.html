@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container-fluid mt-3">
+    <div class="d-flex justify-content-start align-self-center flex-wrap mx-3">
+        {% for dish in dishes %}
+        {% if dish.v_or_n == 'v' %}
+        <button type="button" class="btn btn-success mx-2 my-2 text-capitalize">{{ dish.dish_name }}</button>
+        {% elif dish.v_or_n == 'n' %}
+        <button type="button" class="btn btn-danger mx-2 my-2 text-capitalize">{{ dish.dish_name }}</button>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock%}
